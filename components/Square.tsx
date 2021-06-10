@@ -4,7 +4,7 @@ import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { Pessoa } from '../types';
 
 export function Square(pessoa: Pessoa, callback: Function, index: number) {
-    const avatar = <Image source={{ uri: `https://avatars.dicebear.com/api/human/${(index + Math.random()).toString()}.svg` }} style={styles.image} />;
+    const avatar = <Image source={{ uri: `https://avatars.dicebear.com/api/human/${index.toString()}.svg` }} style={styles.image} />;
     let name = <Text adjustsFontSizeToFit style={styles.number}>{pessoa.name}</Text>
     console.log(pessoa);
     return <TouchableOpacity onPress={() => callback(index)}>

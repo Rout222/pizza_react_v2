@@ -5,6 +5,7 @@ import { Dimensions, TouchableHighlight } from 'react-native';
 import { Modal, StyleSheet } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { TextInput } from 'react-native-gesture-handler';
+import { Button } from '../components/Button';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Square } from '../components/Square';
@@ -16,28 +17,52 @@ const { width } = Dimensions.get('window');
 export default function TabOneScreen() {
   const [participantes, setParticipantes] = useState<Pessoa[]>([])
   const maxColumns = Math.floor(width / 110);
-  let pessoa = new Pessoa(0, "#001155", "");
-
-  useEffect(() => {
-    setParticipantes([pessoa])
-  }, []);
   
 
   const adicionarPedaco = (i: Pessoa) => {
     console.log(i);
   }
 
+  /**
+   *  Funcionalidade dos botões
+   */
+
+   const gera_cor = () => {
+    var hexadecimais = '0123456789ABCDEF';
+    var cor = '#';
+
+    // Pega um número aleatório no array acima
+    for (var i = 0; i < 6; i++ ) {
+    //E concatena à variável cor
+        cor += hexadecimais[Math.floor(Math.random() * 16)];
+    }
+    return cor;
+  }
+
+   const adicionarPessoa = () => {
+    const pessoa = new Pessoa(0, gera_cor(), "");
+    setParticipantes([...participantes, pessoa]);
+  };
+
+  let editando = false;
+
+  const botoes = [
+    Button(editando ?"#6c757d" : "#28a745", "+", editando ? () =>{}  : adicionarPessoa), 
+    Button("#17a2b8", "Editar", () => {}),
+    Button(editando ?"#6c757d" : "#dc3545", "Zerar", editando ? () =>{}  : () => {setParticipantes([])})
+  ]
+
   return (
     <>
     <View style={styles.container}>
       <View style={styles.container} /*contentContainerStyle={styles.contentContainer}*/>
-        {/* <FlatList 
+        <FlatList 
           data={botoes} 
           style={styles.actions}
           contentContainerStyle={styles.listContainerAction}
           keyExtractor={(item, index) => index.toString()}
           horizontal={true}
-          renderItem= { ({ item, index }) => item} /> */}
+          renderItem= { ({ item, index }) => item} />
         <FlatList 
           style={styles.list}
           contentContainerStyle={styles.listContainer}
@@ -135,3 +160,4 @@ const styles = StyleSheet.create({
     borderColor: 'grey',
   }
 });
+
