@@ -17,61 +17,63 @@ const { width } = Dimensions.get('window');
 export default function TabOneScreen() {
   const [participantes, setParticipantes] = useState<Pessoa[]>([])
   const maxColumns = Math.floor(width / 110);
-  
-
-  const adicionarPedaco = (i: Pessoa) => {
-    console.log(i);
-  }
 
   /**
-   *  Funcionalidade dos botões
+   *  Buttons
    */
 
-   const gera_cor = () => {
+  const gera_cor = () => {
     var hexadecimais = '0123456789ABCDEF';
     var cor = '#';
 
     // Pega um número aleatório no array acima
-    for (var i = 0; i < 6; i++ ) {
-    //E concatena à variável cor
-        cor += hexadecimais[Math.floor(Math.random() * 16)];
+    for (var i = 0; i < 6; i++) {
+      //E concatena à variável cor
+      cor += hexadecimais[Math.floor(Math.random() * 16)];
     }
     return cor;
   }
 
-   const adicionarPessoa = () => {
+  const adicionarPessoa = () => {
     const pessoa = new Pessoa(0, gera_cor(), "");
     setParticipantes([...participantes, pessoa]);
   };
 
+
+  const addScore = (i: number) => {
+    let p = participantes
+    p[i].count = p[i].count + 1
+    setParticipantes([...p])
+  }
+
   let editando = false;
 
   const botoes = [
-    Button(editando ?"#6c757d" : "#28a745", "+", editando ? () =>{}  : adicionarPessoa), 
-    Button("#17a2b8", "Editar", () => {}),
-    Button(editando ?"#6c757d" : "#dc3545", "Zerar", editando ? () =>{}  : () => {setParticipantes([])})
+    Button(editando ? "#6c757d" : "#28a745", "+", editando ? () => { } : adicionarPessoa),
+    Button("#17a2b8", "Editar", () => { }),
+    Button(editando ? "#6c757d" : "#dc3545", "Zerar", editando ? () => { } : () => { setParticipantes([]) })
   ]
 
   return (
     <>
-    <View style={styles.container}>
-      <View style={styles.container} /*contentContainerStyle={styles.contentContainer}*/>
-        <FlatList 
-          data={botoes} 
-          style={styles.actions}
-          contentContainerStyle={styles.listContainerAction}
-          keyExtractor={(item, index) => index.toString()}
-          horizontal={true}
-          renderItem= { ({ item, index }) => item} />
-        <FlatList 
-          style={styles.list}
-          contentContainerStyle={styles.listContainer}
-          data={participantes} 
-          keyExtractor={(item, index) => index.toString()}
-          numColumns = {maxColumns}
-          renderItem= { ({ item, index }) => Square(item, adicionarPedaco, index)} />
+      <View style={styles.container}>
+        <View style={styles.container} /*contentContainerStyle={styles.contentContainer}*/>
+          <FlatList
+            data={botoes}
+            style={styles.actions}
+            contentContainerStyle={styles.listContainerAction}
+            keyExtractor={(item, index) => index.toString()}
+            horizontal={true}
+            renderItem={({ item, index }) => item} />
+          <FlatList
+            style={styles.list}
+            contentContainerStyle={styles.listContainer}
+            data={participantes}
+            keyExtractor={(item, index) => index.toString()}
+            numColumns={maxColumns}
+            renderItem={({ item, index }) => Square(item, () => {addScore(index)})} />
+        </View>
       </View>
-    </View>
     </>
   );
 }
@@ -88,10 +90,10 @@ const styles = StyleSheet.create({
   getStartedContainer: {
     width: '100%'
   },
-  list :{
+  list: {
     width: '100%'
   },
-  actions : {
+  actions: {
     height: 120
   },
   listContainerAction: {
@@ -138,8 +140,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center"
   },
-  row : {
-    flexDirection : 'row',
+  row: {
+    flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 10,
   },
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
     lineHeight: 40,
     justifyContent: 'center',
   },
-  textinput : {
+  textinput: {
     flex: 2,
     height: 40,
     borderWidth: 0,

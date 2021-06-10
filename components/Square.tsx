@@ -3,11 +3,12 @@ import * as React from 'react';
 import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { Pessoa } from '../types';
 
-export function Square(pessoa: Pessoa, callback: Function, index: number) {
-    const avatar = <Image source={{ uri: `https://avatars.dicebear.com/api/human/${index.toString()}.svg` }} style={styles.image} />;
+export function Square(pessoa: Pessoa, callback: VoidFunction) {
+    console.log(pessoa.color)
+    const avatar = <Image source={{ uri: `https://avatars.dicebear.com/api/human/${pessoa.color?.replace('#', '')}.svg` }} style={styles.image} />;
     let name = <Text adjustsFontSizeToFit style={styles.number}>{pessoa.name}</Text>
-    console.log(pessoa);
-    return <TouchableOpacity onPress={() => callback(index)}>
+    
+    return <TouchableOpacity onPress={callback}>
         <View style={[styles.qd, {backgroundColor: pessoa.color}]}>
             {(!!pessoa.name && pessoa.name.length) > 0 ? name : <></>}
             {avatar}
