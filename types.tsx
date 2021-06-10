@@ -20,3 +20,15 @@ export type TabOneParamList = {
 export type TabTwoParamList = {
   TabTwoScreen: undefined;
 };
+
+export class Pessoa {
+  public count?: number = 0
+  public color?: string
+  public name?: string
+
+  constructor(count: number, color: string, name: string) {
+    this.count = count
+    this.color = color
+    this.name = name
+  }
+}
