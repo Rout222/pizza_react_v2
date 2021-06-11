@@ -17,6 +17,7 @@ const { width } = Dimensions.get('window');
 export default function TabOneScreen() {
   const [participantes, setParticipantes] = useState<Pessoa[]>([])
   const maxColumns = Math.floor(width / 110);
+  var indexEdit : number;
 
   /**
    *  Buttons
@@ -46,16 +47,80 @@ export default function TabOneScreen() {
     setParticipantes([...p])
   }
 
-  let editando = false;
+  const changeName = (i: number) => {
+    setModalVisible(true);
+    setI(i);
+    changeNome(participantes[i].name);
+    changePedaco(participantes[i].count);
+  }
+
+  const [editando, setEditando] = useState(false)
+  const editMode = () => {
+    setEditando(!editando);
+  }
 
   const botoes = [
     Button(editando ? "#6c757d" : "#28a745", "+", editando ? () => { } : adicionarPessoa),
-    Button("#17a2b8", "Editar", () => { }),
+    Button("#17a2b8", "Editar", editMode),
     Button(editando ? "#6c757d" : "#dc3545", "Zerar", editando ? () => { } : () => { setParticipantes([]) })
   ]
 
+  const [modalVisible, setModalVisible] = useState(false)
+  const [nome, changeNome] = useState<string>("");
+  const [pedaco, changePedaco] = useState<number>(0);
+  const [i_edit, setI] = useState<number>(-1)
+
+  const finishEdition = () => {
+    let p = participantes;
+    p[i_edit].count = pedaco;
+    p[i_edit].name = nome;
+    setParticipantes([...p]);
+
+    setModalVisible(false);
+    setEditando(false)
+  }
+
+
   return (
     <>
+
+      <Modal
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => {}}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={styles.row}>
+              <Text style={styles.label}>
+                Nome:
+              </Text>
+              <TextInput
+                style={styles.textinput}
+                onChangeText={text => changeNome(text)}
+                value={nome}
+              />
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.label}>
+                Quant:
+              </Text>
+              <TextInput
+                style={styles.textinput}
+                keyboardType={'numeric'}
+                onChangeText={numeric => changePedaco(parseInt(numeric) | 0)}
+                value={pedaco.toString()}
+              />
+            </View>
+            <TouchableHighlight
+              style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+              onPress={() => {finishEdition()}}
+            >
+              <Text style={styles.textStyle}>Confirmar</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.container}>
         <View style={[styles.container, styles.contentContainer]} >
           <FlatList
@@ -71,7 +136,7 @@ export default function TabOneScreen() {
             data={participantes}
             keyExtractor={(item, index) => index.toString()}
             numColumns={maxColumns}
-            renderItem={({ item, index }) => Square(item, () => {addScore(index)})} />
+            renderItem={({ item, index }) => Square(item, () => { (editando) ? changeName(index) : addScore(index) })} />
         </View>
       </View>
     </>
@@ -116,7 +181,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
-    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2
@@ -160,6 +224,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderBottomWidth: 1,
     borderColor: 'grey',
+    backgroundColor: '#ffffff'
   }
 });
 

@@ -23,8 +23,8 @@ export type TabTwoParamList = {
 
 export class Pessoa {
   public count: number = 0
-  public color?: string
-  public name?: string
+  public color: string
+  public name: string
 
   constructor(count: number, color: string, name: string) {
     this.count = count
