@@ -57,7 +57,7 @@ export default function TabOneScreen() {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.container} /*contentContainerStyle={styles.contentContainer}*/>
+        <View style={[styles.container, styles.contentContainer]} >
           <FlatList
             data={botoes}
             style={styles.actions}
