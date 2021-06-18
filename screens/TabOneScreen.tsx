@@ -110,9 +110,9 @@ export default function TabOneScreen() {
               </Text>
               <TextInput
                 style={styles.textinput}
-                numeric
+                numeric={true}
                 keyboardType={'numeric'}
-                onChangeText={numeric => changePedaco(numeric)}
+                onChangeText={numeric => changePedaco(parseInt(numeric) || 0)}
                 value={pedaco.toString()}
               />
             </View>
