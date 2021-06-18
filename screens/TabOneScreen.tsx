@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { Pressable } from 'react-native';
 import { Dimensions, TouchableHighlight } from 'react-native';
 import { Modal, StyleSheet } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
@@ -17,7 +18,7 @@ const { width } = Dimensions.get('window');
 export default function TabOneScreen() {
   const [participantes, setParticipantes] = useState<Pessoa[]>([])
   const maxColumns = Math.floor(width / 110);
-  var indexEdit : number;
+  var indexEdit: number;
 
   /**
    *  Buttons
@@ -83,11 +84,11 @@ export default function TabOneScreen() {
 
   return (
     <>
-
       <Modal
         animationType="slide"
+        transparent={true}
         visible={modalVisible}
-        onRequestClose={() => {}}
+        onRequestClose={() => { }}
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
@@ -99,6 +100,8 @@ export default function TabOneScreen() {
                 style={styles.textinput}
                 onChangeText={text => changeNome(text)}
                 value={nome}
+                outlined
+                label={"Nome"}
               />
             </View>
             <View style={styles.row}>
@@ -107,14 +110,15 @@ export default function TabOneScreen() {
               </Text>
               <TextInput
                 style={styles.textinput}
+                numeric
                 keyboardType={'numeric'}
-                onChangeText={numeric => changePedaco(parseInt(numeric) | 0)}
+                onChangeText={numeric => changePedaco(numeric)}
                 value={pedaco.toString()}
               />
             </View>
             <TouchableHighlight
               style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-              onPress={() => {finishEdition()}}
+              onPress={finishEdition}
             >
               <Text style={styles.textStyle}>Confirmar</Text>
             </TouchableHighlight>
@@ -147,7 +151,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignContent: 'stretch',
-    backgroundColor: '#fff',
+    backgroundColor: "#ffffff"
   },
   contentContainer: {
     paddingTop: 30,
@@ -173,7 +177,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
+    backgroundColor: 'transparent'
   },
   modalView: {
     margin: 20,
@@ -217,6 +222,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 40,
     justifyContent: 'center',
+    backgroundColor: '#ffffff',
+    color: 'black'
   },
   textinput: {
     flex: 2,
@@ -224,7 +231,6 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderBottomWidth: 1,
     borderColor: 'grey',
-    backgroundColor: '#ffffff'
+    backgroundColor: '#ffffff',
   }
 });
-
